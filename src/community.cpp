@@ -4,8 +4,13 @@ Community::Community()
   : name(""), people(map<string,Person>()) {
 }
 
-Community::Community(string _name, map<string,Person> _people) 
-  : name(_name), people(_people) {
+Community::Community(string _name, map<string,Person> _people)
+  : people(_people) {
+    if (!set_name(_name)) {
+        std::cout << "Something went wrong constructing this community. Default values will be used.";
+        _name = "";
+    }
+    people = _people;
 }
 
 string Community::get_name() {
@@ -13,16 +18,20 @@ string Community::get_name() {
 }
 
 bool Community::set_name(string _name) {
-	if((str_isalnum(_name) == 1) && (0 < _name.size()) && (_name.size() <= 128) && (std::isdigit(_name[0]) == 0)) {
+	if(str_isalnum(_name) && 0 < _name.size() && _name.size() <= 128 && !std::isdigit(_name[0])) {
+    name = _name;
     return true;
   }
   return false;
 }
 
 bool Community::add_person(Person _person) {
-    contact to_add(_person.get_username(), _person);
-    
-    return false;
+    if (people.count(_person.get_username()) > 0)
+      return false;
+    else {
+      people.insert(std::pair<string,Person>(_person.get_username(), _person));
+      return true;
+    }
 }
 
 // return the person object for a given username
@@ -34,7 +43,7 @@ Person Community::get_member(string username) {
         return Person();
     }
 }
-    
+
 list<string> Community::get_all_usernames() {
     list<string> usernames;
     std::map<string,Person>::iterator it = people.begin();
@@ -97,4 +106,3 @@ bool Community::send_msg(list<string> usernames, string msg) {
 	// make sure the username is validated
 	return false;
 }
-

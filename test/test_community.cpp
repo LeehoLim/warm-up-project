@@ -19,9 +19,27 @@ void gen_random(char *s, const int len) {
 // you should complete the following test cases
 // you should add more if you see fit
 
+void gen_random(char *s, const int len) {
+    static const char alphanum[] =
+        "0123456789"
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        "abcdefghijklmnopqrstuvwxyz";
+
+    for (int i = 0; i < len; ++i) {
+        s[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+
+    s[len] = 0;
+}
+
 // test get_name
 TEST_F(test_community, get_name) {
-
+	community = Community("HelloWorld", map<string,Person>());
+	EXPECT_EQ(community.get_name(), "HelloWorld");
+	community = Community();
+	EXPECT_EQ(community.get_name(), "");
+	community = Community("12323jdfalsf");
+	EXPECT_EQ(community.get_name(), "");
 }
 
 // test set_name
@@ -43,7 +61,7 @@ TEST_F(test_community, set_name) {
 	EXPECT_FALSE(community.set_name("12a"));
 	EXPECT_TRUE(community.set_name("a12"));
 
-	
+
 
 
 }
@@ -82,4 +100,3 @@ TEST_F(test_community, get_member) {
 // test send_msg
 TEST_F(test_community, send_msg) {
 }
-

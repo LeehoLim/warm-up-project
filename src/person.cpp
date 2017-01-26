@@ -19,9 +19,9 @@ Person::Person()
 }
 
 Person::Person(string _username, string _firstname, string _lastname,
-               string _gender, int _age, string _tagline)
-  : username(_username), firstname(_firstname), lastname(_lastname),
-    gender(_gender), age(_age), tagline(_tagline) {
+               string _gender, int _age, string _tagline) {
+      if (!set_info(_username, _firstname, _lastname, _gender, _age, _tagline))
+          std::cout << "Something went wrong. Using default values.";
 }
 
 string Person::get_username() {
@@ -44,12 +44,34 @@ string Person::get_tagline() {
 }
 string Person::get_info() {
 	  string ret = "";
-    
+    if (get_username() != "") {
+      ret += get_username();
+      ret += "\n";
+    }
+    if (get_firstname() != "") {
+      ret += get_firstname();
+      ret += "\n";
+    }
+    if (get_lastname() != "") {
+      ret += get_lastname();
+      ret += "\n";
+    }
+    if (get_gender() != "") {
+      ret += get_gender();
+      ret += "\n";
+    }
+    if (!!get_age() || (!get_age() && !ret.compare(""))) {
+      ret += get_age();
+      ret += "\n";
+    }
+    if (get_tagline() != "")
+      ret += get_tagline();
+
     return ret;
 }
 
 bool Person::set_username(string _username) {
-  if (str_isalnum(_username) && !std::isdigit(_username[0])) {
+  if (str_isalnum(_username) && !std::isdigit(_username[0]) && _username.size() <= 64 && !_username.compare("")) {
     username = _username;
   	return true;
   }
@@ -110,13 +132,13 @@ bool Person::set_tagline(string _tagline) {
 }
 
 
-bool Person::set_info(string _username, string _firstname, string _lastname,
+bool Person::set_info(string _username, string _firstname, string _lastname, string _gender,
                       int _age, string _tagline) {
-  if (set_username(_username) && set_firstname(_firstname) && set_lastname(_lastname) && set_age(_age) && set_tagline(_tagline))
+  if (set_username(_username) && set_firstname(_firstname) && set_lastname(_lastname) && set_gender(_gender) && set_age(_age) && set_tagline(_tagline))
     return true;
   else
   {
-    set_info("", "", "", 0, "");
+    set_info("", "", "", "", 0, "");
     return false;
   }
 }

@@ -10,6 +10,7 @@ protected:
 
 // test get_username and set_username
 TEST_F(test_person, test_username) {
+	EXPECT_FALSE(person.set_username(""));
 }
 
 // test get_firstname and set_firstname
@@ -61,4 +62,3 @@ TEST_F(test_person, test_info) {
 //   can also separate them into several test cases
 TEST_F(test_person, test_msg) {
 }
-

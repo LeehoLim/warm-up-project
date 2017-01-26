@@ -23,11 +23,11 @@ class Person {
     // ignore classifications
     // when a message is retrieved, delete it immediately
     queue<string> inbox;
-  
+
   public:
 
     Person();
-    Person(string _username, string _firstname, string _lastname, 
+    Person(string _username, string _firstname, string _lastname,
            string gender, int _age, string _tagline);
 
     string get_username();
@@ -44,7 +44,7 @@ class Person {
     bool set_gender(string _gender);
     bool set_age(int _age);
     bool set_tagline(string _tagline);
-    bool set_info(string _username, string _firstname, string _lastname,
+    bool set_info(string _username, string _firstname, string _lastname, string _gender,
                   int _age, string _tagline);
 
     void send_msg(Person &recipient, string msg);
@@ -56,4 +56,3 @@ bool str_isalpha(const string str);
 bool str_isalnum(const string str);
 
 #endif /* COMMUNITY_H */
-
