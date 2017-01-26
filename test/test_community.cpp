@@ -8,14 +8,6 @@ protected:
 	Community community;
 };
 
-
-void gen_random(char *s, const int len) {
-	static const char alphanum[] =
-	"0123456789"
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	"abcdefghijklmnopqrstuvwxyz";
-}
-
 // you should complete the following test cases
 // you should add more if you see fit
 
@@ -38,7 +30,7 @@ TEST_F(test_community, get_name) {
 	EXPECT_EQ(community.get_name(), "HelloWorld");
 	community = Community();
 	EXPECT_EQ(community.get_name(), "");
-	community = Community("12323jdfalsf");
+	community = Community("12323jdfalsf", map<string,Person>());
 	EXPECT_EQ(community.get_name(), "");
 }
 
@@ -69,10 +61,10 @@ TEST_F(test_community, set_name) {
 // test add_person
 TEST_F(test_community, add_person) {
 	//Test that a username is not used yet
-	community = community();
-	person1 = person("leeholim", "leeho", "lim", "m", 22, "I like Rohin");
-	person2 = person("rohinbhargava", "rohin", "bhargava", "m", 20, "I like Leeho (;");
-	person3 = person("Leeholim", "leeho", "lim", "m", 22, "I still like Rohin");
+	community = Community();
+	Person person1 = Person("leeholim", "leeho", "lim", "m", 22, "I like Rohin");
+	Person person2 = Person("rohinbhargava", "rohin", "bhargava", "m", 20, "I like Leeho (;");
+	Person person3 = Person("Leeholim", "leeho", "lim", "m", 22, "I still like Rohin");
 	EXPECT_TRUE(community.add_person(person1));
 	EXPECT_FALSE(community.add_person(person1));
 	EXPECT_TRUE(community.add_person(person2));
