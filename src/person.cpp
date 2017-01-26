@@ -10,16 +10,16 @@ bool str_isalpha(const string str){
 bool str_isalnum(const string s)
 {
     std::string::const_iterator it = s.begin();
-    while (it != s.end() && std::isdigit(*it)) ++it;
+    while (it != s.end() && std::isalnum(*it)) ++it;
     return !s.empty() && it == s.end();
 }
 
-Person::Person() 
+Person::Person()
   : username(""), firstname(""), lastname(""), gender(""), age(0), tagline("") {
 }
 
-Person::Person(string _username, string _firstname, string _lastname, 
-               string _gender, int _age, string _tagline) 
+Person::Person(string _username, string _firstname, string _lastname,
+               string _gender, int _age, string _tagline)
   : username(_username), firstname(_firstname), lastname(_lastname),
     gender(_gender), age(_age), tagline(_tagline) {
 }
@@ -48,15 +48,17 @@ string Person::get_info() {
 }
 
 bool Person::set_username(string _username) {
-    // TODO
-	// write the function for set_username
+  if (str_isalnum(_username) && !std::isdigit(_username[i])) {
     username = _username;
-	return true;
+  	return true;
+  }
+  else {
+    return false;
+  }
 }
 
 bool Person::set_firstname(string _firstname) {
-    // TODO
-	if (f && /* fill in any necessary tests here */) {
+	if (str_isalpha(_firstname) && _firstname.size() <= 64) {
         firstname = _firstname;
         return true;
     }
@@ -68,7 +70,7 @@ bool Person::set_firstname(string _firstname) {
 
 bool Person::set_lastname(string _lastname) {
     // TODO
-	if (str.length()/* fill in any necessary tests here */) {
+	if (str_isalpha(_firstname) && _firstname.size() <= 64) {
         lastname = _lastname;
         return true;
     }
@@ -78,13 +80,18 @@ bool Person::set_lastname(string _lastname) {
 }
 
 bool Person::set_gender(string _gender){
-    //TODO
-    return false;
+    if (*_gender == 'm' || *_gender == 'f') {
+      gender = _gender;
+      return true;
+    }
+    else {
+      return false;
+    }
 }
 
 bool Person::set_age(int _age) {
 	// TODO
-    if (0/* fill in any necessary tests here */) {
+    if (age >= 0 && age < 128) {
         age = _age;
         return true;
     }
@@ -94,7 +101,7 @@ bool Person::set_age(int _age) {
 }
 bool Person::set_tagline(string _tagline) {
 	// TODO
-    if (0/* fill in any necessary tests here */) {
+    if (_tagline.size() <= 512) {
         tagline = _tagline;
         return true;
     }
@@ -106,30 +113,27 @@ bool Person::set_tagline(string _tagline) {
 
 bool Person::set_info(string _username, string _firstname, string _lastname,
                       int _age, string _tagline) {
-    // TODO
-	// set the information for
-	// 1) username
-	// 2) firstname
-	// 3) lastnam3
-	// 4) age
-	// 5) tagline
-	return false;
+  if (set_username(_username) && set_firstname(_firstname) && set_lastname(_lastname) && set_age(_age) && set_tagline(_tagline))
+    return true;
+  else
+    return false;
 }
 
 void Person::send_msg(Person &recipient, string msg) {
-	// TODO
-	// send message
+    recipient.get_msg(msg);
     }
 
 void Person::get_msg(string msg) {
-	// TODO
-	// get message
+	  inbox.push(msg);
     }
 
 bool Person::read_msg() {
-	// TODO
-	// print the message if there any message inbox
-    return false;
-
+    if (inbox.size() == 0) {
+      printf("No messages to read.\n");
+      return false;
+    }
+    else {
+      printf("%s\n", inbox.pop();
+      return true;
+    }
 }
-
