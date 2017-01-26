@@ -1,7 +1,7 @@
 #include "person.h"
 
 bool str_isalpha(const string str){
-    for(int i = 0; i < str.size(); i++)
+    for(unsigned long i = 0; i < str.size(); i++)
     	if((isalpha(str[i]) == 0) || (str[i] == ' '))
     		return false;
     return true;
@@ -48,7 +48,7 @@ string Person::get_info() {
 }
 
 bool Person::set_username(string _username) {
-  if (str_isalnum(_username) && !std::isdigit(_username[i])) {
+  if (str_isalnum(_username) && !std::isdigit(_username[0])) {
     username = _username;
   	return true;
   }
@@ -58,19 +58,19 @@ bool Person::set_username(string _username) {
 }
 
 bool Person::set_firstname(string _firstname) {
-	if (str_isalpha(_firstname) && _firstname.size() <= 64) {
-        firstname = _firstname;
-        return true;
+  if (str_isalpha(_firstname) && _firstname.size() <= 64) {
+      firstname = _firstname;
+      return true;
     }
-    else {
-        return false;
+  else {
+      return false;
     }
 }
 
 
 bool Person::set_lastname(string _lastname) {
     // TODO
-	if (str_isalpha(_firstname) && _firstname.size() <= 64) {
+	if (str_isalpha(_lastname) && _lastname.size() <= 64) {
         lastname = _lastname;
         return true;
     }
@@ -80,7 +80,7 @@ bool Person::set_lastname(string _lastname) {
 }
 
 bool Person::set_gender(string _gender){
-    if (*_gender == 'm' || *_gender == 'f') {
+    if ((_gender[0] == 'm' || _gender[0] == 'f') && _gender.size() == 1) {
       gender = _gender;
       return true;
     }
@@ -129,11 +129,12 @@ void Person::get_msg(string msg) {
 
 bool Person::read_msg() {
     if (inbox.size() == 0) {
-      printf("No messages to read.\n");
+      std::cout << "No messages to read.\n";
       return false;
     }
     else {
-      printf("%s\n", inbox.pop();
+      std::cout << inbox.front();
+      inbox.pop();
       return true;
     }
 }
