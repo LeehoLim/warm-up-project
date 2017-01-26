@@ -21,7 +21,8 @@ Person::Person()
 Person::Person(string _username, string _firstname, string _lastname,
                string _gender, int _age, string _tagline) {
       if (!set_info(_username, _firstname, _lastname, _gender, _age, _tagline))
-          std::cout << "Something went wrong. Using default values.";
+          std::cout << "Something went wrong in creating this person. Using default values.\n";
+      std::cout << get_info();
 }
 
 string Person::get_username() {
@@ -46,32 +47,34 @@ string Person::get_info() {
 	  string ret = "";
     if (get_username() != "") {
       ret += get_username();
-      ret += "\n";
+      ret += " ";
     }
     if (get_firstname() != "") {
       ret += get_firstname();
-      ret += "\n";
+      ret += " ";
     }
     if (get_lastname() != "") {
       ret += get_lastname();
-      ret += "\n";
+      ret += " ";
     }
     if (get_gender() != "") {
       ret += get_gender();
-      ret += "\n";
+      ret += " ";
     }
     if (!!get_age() || (!get_age() && !ret.compare(""))) {
       ret += get_age();
+      ret += " ";
+    }
+    if (get_tagline() != "") {
+      ret += get_tagline();
       ret += "\n";
     }
-    if (get_tagline() != "")
-      ret += get_tagline();
 
     return ret;
 }
 
 bool Person::set_username(string _username) {
-  if (str_isalnum(_username) && !std::isdigit(_username[0]) && _username.size() <= 64 && !_username.compare("")) {
+  if (str_isalnum(_username) && !std::isdigit(_username[0]) && _username.size() <= 64 && _username.compare("")) {
     username = _username;
   	return true;
   }
@@ -138,7 +141,12 @@ bool Person::set_info(string _username, string _firstname, string _lastname, str
     return true;
   else
   {
-    set_info("", "", "", "", 0, "");
+    username = "";
+    firstname = "";
+    lastname = "";
+    gender = "";
+    age = 0;
+    tagline = "";
     return false;
   }
 }
