@@ -43,7 +43,8 @@ string Person::get_tagline() {
     return tagline;
 }
 string Person::get_info() {
-	string ret = "";
+	  string ret = "";
+    
     return ret;
 }
 
@@ -90,8 +91,7 @@ bool Person::set_gender(string _gender){
 }
 
 bool Person::set_age(int _age) {
-	// TODO
-    if (age >= 0 && age < 128) {
+    if (_age >= 0 && _age < 128) {
         age = _age;
         return true;
     }
@@ -100,7 +100,6 @@ bool Person::set_age(int _age) {
     }
 }
 bool Person::set_tagline(string _tagline) {
-	// TODO
     if (_tagline.size() <= 512) {
         tagline = _tagline;
         return true;
@@ -116,7 +115,10 @@ bool Person::set_info(string _username, string _firstname, string _lastname,
   if (set_username(_username) && set_firstname(_firstname) && set_lastname(_lastname) && set_age(_age) && set_tagline(_tagline))
     return true;
   else
+  {
+    set_info("", "", "", 0, "");
     return false;
+  }
 }
 
 void Person::send_msg(Person &recipient, string msg) {
