@@ -1,5 +1,4 @@
-
-*** Your name here ***
+Leeho Lim, Rohin Bhargava
 CS22001 Warm-up Project written answers
 
 Please add your written answers to the question in the assignment specification
@@ -7,8 +6,21 @@ to this file! *** ONLY ANSWERS IN THIS EXACT FILE WILL BE GRADED! ***
 
 1. 
 
-  a) [...]
+a) 
+Assuming that there will be a lot of entries in our community, it would be much more effective (complexity-wise) to use an “stl map” than it would any another data structure, such as (say) a vector (the most direct comparison). This is because C++ implements the map function in a way that is most analogous to a red-black tree structure, which is somewhat similar to a self-balancing binary search tree. This allows for much more efficiency than a vector, because with a map, we can achieve O(log n) time for different operations.
 
 2. 
 
-[...]
+a) 
+This is simply because we do not want any other classes (i.e. community) or other instances of person accessing the inboxes of one another. Therefore, it would make sense to make the inbox of a person private.
+
+b) (Bonus question)
+In order to do this, the way that we thought would be best to implement this was to first add a unique community ID (because we see that two different communities can have the same name). We would then add an extra parameter/value to the “Person” class, which contains an association ID to the community that they are a part of. Finally, we can simply filter a case to allow a particular “Person” to read the message if their unique community association ID corresponds with the community association ID of the “Person” that sent the message.
+
+3.
+
+a)
+We thought that the most clever/best part of the specification/design was using a map as opposed to any other data structure to implement people as members of the community. We also thought that the queues for the messages were a clever addition to the inbox capability.
+
+b)
+We thought that the most awkward part was the fact that everything was made case sensitive, and that the gender requirements were enforced in a way such that the only accepted inputs are ‘m’ or ‘f’. We believe that there should be more flexibility in the user input for this option.
