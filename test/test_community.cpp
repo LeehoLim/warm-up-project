@@ -259,4 +259,8 @@ TEST_F(test_community, send_msg) {
 	faulty.push_back("LeehoLim");
 
 	EXPECT_FALSE(community.send_msg(faulty, "hello!"));
+
+	// std::list<string> toTest = community.get_all_usernames();
+	// for (std::list<string>::iterator it = toTest.begin(); it != toTest.end(); ++it)
+	// 	EXPECT_TRUE(community.get_member(*it).read_msg());
 }
