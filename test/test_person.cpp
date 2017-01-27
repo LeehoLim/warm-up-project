@@ -8,6 +8,46 @@ protected:
 	Person recipient;
 };
 
+std::string gen_random_username(const int len) {
+		char s[len];
+    static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+		s[0] = alphanum[(rand() % (sizeof(alphanum) - 11)) + 10];
+    for (int i = 1; i < len - 2; ++i) {
+        s[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
+    }
+
+    s[len] = 0;
+
+		return std::string(s);
+}
+
+std::string gen_random_name(const int len) {
+		char s[len];
+    static const char alpha[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    for (int i = 0; i < len - 1; ++i) {
+        s[i] = alpha[rand() % (sizeof(alpha) - 1)];
+    }
+
+    s[len] = 0;
+
+		return std::string(s);
+}
+
+std::string gen_random_tagline(const int len) {
+	char s[len];
+	static const char arr[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz;'./<>~!@#$%^&*() _+=\\|{}[]`\"";
+
+	for (int i = 0; i < len - 1; ++i) {
+			s[i] = arr[rand() % (sizeof(arr) - 1)];
+	}
+
+	s[len] = 0;
+
+	return std::string(s);
+}
+
 // test get_username and set_username
 TEST_F(test_person, test_username) {
 	//Constructor testing
@@ -15,6 +55,7 @@ TEST_F(test_person, test_username) {
 	Person person2 = Person("rohinbhargava", "rohin", "bhargava", "m", 20, "I like Leeho");
 	Person person3 = Person("LeehoLim", "leeho", "lim", "m", 22, "I still like Rohin");
 	Person person4 = Person();
+	Person person5 = Person("fads", "le", "lm", "m", 312, "fdasfsn");
 
 	//Get username of a person that already has username
 	EXPECT_EQ(person1.get_username(), "leeholim");
@@ -44,6 +85,13 @@ TEST_F(test_person, test_username) {
 	EXPECT_FALSE(person.set_username(""));
 	EXPECT_FALSE(person.set_username(" "));
 	EXPECT_TRUE(person.set_username("notempty"));
+
+	// fuzz testing
+	for (int i = 0; i < 50; ++i) {
+		string random = gen_random_username(64);
+		EXPECT_TRUE(person.set_username(random));
+		EXPECT_EQ(person.get_username(), random);
+	}
 }
 
 // test get_firstname and set_firstname
@@ -73,6 +121,12 @@ TEST_F(test_person, test_firstname) {
 	EXPECT_STREQ(EmptyPerson.get_firstname().c_str(), "");
 	EXPECT_STRNE(EmptyPerson.get_firstname().c_str(), "something");
 
+	// fuzz testing
+	for (int i = 0; i < 50; ++i) {
+		string random = gen_random_name(64);
+		EXPECT_TRUE(person.set_firstname(random));
+		EXPECT_EQ(person.get_firstname(), random);
+	}
 }
 
 // test get_lastname and set_lastname
@@ -99,6 +153,12 @@ TEST_F(test_person, test_lastname) {
 	EXPECT_STREQ(EmptyPerson.get_lastname().c_str(), ""); //Does not have a last name, so should be empty
 	EXPECT_STRNE(EmptyPerson.get_lastname().c_str(), "something"); //Does not have a last name, so should not be something
 
+	// fuzz testing
+	for (int i = 0; i < 50; ++i) {
+		string random = gen_random_name(64);
+		EXPECT_TRUE(person.set_lastname(random));
+		EXPECT_EQ(person.get_lastname(), random);
+	}
 }
 
 /**you may need to write more test functions.
@@ -132,6 +192,13 @@ TEST_F(test_person, test_age) {
 	//Person cannot be 128 years old
 	EXPECT_FALSE(person.set_age(128)); //The person cannot be 128
 	EXPECT_NE(person.get_age(), 128); //The person is not 128 years old, because this was not set
+
+	// fuzz testing
+	for (int i = 0; i < 50; ++i) {
+		int random = rand() % 128;
+		EXPECT_TRUE(person.set_age(random));
+		EXPECT_EQ(person.get_age(), random);
+	}
 }
 
 // test get_tagline and set_tagline
@@ -148,6 +215,13 @@ TEST_F(test_person, test_tagline) {
 	EXPECT_TRUE(person.set_tagline("")); //Set to empty is legal
 	EXPECT_EQ(person.get_tagline(), ""); //Should equal empty string
 	EXPECT_NE(person.get_tagline(), " "); //Should not equal space or anything, because it was declared empty
+
+	// fuzz testing
+	for (int i = 0; i < 50; ++i) {
+		string random = gen_random_tagline(512);
+		EXPECT_TRUE(person.set_tagline(random));
+		EXPECT_EQ(person.get_tagline(), random);
+	}
 }
 
 //test get_gender and set_gender
@@ -160,14 +234,20 @@ TEST_F(test_person, test_gender) {
 	EXPECT_FALSE(person.set_gender("lizard")); //Not accounting for non-binary
 	EXPECT_TRUE(person.set_gender("m")); //m for male
 	EXPECT_TRUE(person.set_gender("f")); //f for female
+
+	// fuzz testing
+	for (int i = 0; i < 50; ++i) {
+		string random = "m";
+		if (rand() % 101 > 50)
+			random = "f";
+		EXPECT_TRUE(person.set_gender(random));
+		EXPECT_EQ(person.get_gender(), random);
+	}
 }
 
 
 // test get_info and set_info
 TEST_F(test_person, test_info) {
-	Person Rightperson1 = Person("a", "", "", "m", 0, "wubba wub");
-	Person Rightperson2 = Person("a1steaksauc3", "", "", "f", 127, "h00ba hub3-a");
-
 	//Wrong username
 	EXPECT_FALSE(person.set_info("1hubba", "leeho", "lim", "m", 22, "hubba hubba"));
 
@@ -185,18 +265,68 @@ TEST_F(test_person, test_info) {
 
 	//Correct with blank names, max age
 	EXPECT_TRUE(person.set_info("a", "", "", "m", 0, "wubba wub"));
+	EXPECT_EQ(person.get_info(), "Username: a Gender: m Tagline: wubba wub\n");
 
 	//Correct with blank names, max age, non-alphanumeric characters in tagline
 	EXPECT_TRUE(person.set_info("a1steaksauc3", "", "", "f", 127, "h00ba hub3-a"));
+	EXPECT_EQ(person.get_info(), "Username: a1steaksauc3 Gender: f Age: 127 Tagline: h00ba hub3-a\n");
 
+
+	// fuzz testing
+	for (int i = 0; i < 50; ++i) {
+		int r_age = rand() % 128;
+		string m_f = "f";
+		if (rand() % 101 > 50)
+			m_f = "m";
+		string username = gen_random_username(64);
+		string firstname = gen_random_name(64);
+		string lastname = gen_random_name(64);
+		string tagline = gen_random_tagline(512);
+		EXPECT_TRUE(person.set_info(username, firstname, lastname, m_f,r_age, tagline));
+		EXPECT_EQ(person.get_info(), "Username: " + username + " First Name: " + firstname + " Last Name: " + lastname + " Gender: " + m_f + " Age: " + std::to_string(r_age) + " Tagline: " + tagline + "\n");
+	}
 }
 
 // test send_msg and read_msg
 //   to make your code shorter, we suggest combining these tests together; you
 //   can also separate them into several test cases
 TEST_F(test_person, test_msg) {
+	// empty inbox
 	person.get_msg("Hey there :)\n");
-	person.read_msg();
-	person.read_msg();
-	person.read_msg();
+	EXPECT_TRUE(person.read_msg());
+	EXPECT_FALSE(person.read_msg());
+	EXPECT_FALSE(person.read_msg());
+
+	// mixing messages
+	person.send_msg(recipient, "yooooooooo\n");
+	recipient.send_msg(person, "what's up\n");
+	EXPECT_TRUE(recipient.read_msg());
+	EXPECT_TRUE(person.read_msg());
+	EXPECT_FALSE(recipient.read_msg());
+	EXPECT_FALSE(person.read_msg());
+
+	// multiple messages
+	recipient.send_msg(person, "helloooo\n");
+	recipient.send_msg(person, "noo\n");
+	EXPECT_TRUE(person.read_msg());
+	EXPECT_TRUE(person.read_msg());
+	EXPECT_FALSE(person.read_msg());
+
+	//typical scenario
+	person.send_msg(recipient, "really?\n");
+	EXPECT_TRUE(recipient.read_msg());
+	recipient.send_msg(person, "Yeah that's crazy.\n");
+	EXPECT_TRUE(person.read_msg());
+	EXPECT_FALSE(recipient.read_msg());
+	EXPECT_FALSE(person.read_msg());
+
+	//typical scenario 2
+	person.send_msg(recipient, "forreal?\n");
+	EXPECT_TRUE(recipient.read_msg());
+	EXPECT_FALSE(recipient.read_msg());
+	recipient.send_msg(person, "Yeah forreal.\n");
+	EXPECT_TRUE(person.read_msg());
+	EXPECT_FALSE(person.read_msg());
+
+	// Fuzz testing would obfuscate stdout.
 }

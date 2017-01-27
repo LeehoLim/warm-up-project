@@ -11,12 +11,12 @@ protected:
 // you should complete the following test cases
 // you should add more if you see fit
 
-std::string gen_random_username(const int len) {
+std::string gen_random_username11(const int len) {
 		char s[len];
     static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-		s[0] = alphanum[rand() % (sizeof(alphanum) - 11) + 10];
-    for (int i = 0; i < len - 1; ++i) {
+		s[0] = alphanum[(rand() % (sizeof(alphanum) - 11)) + 10];
+    for (int i = 1; i < len - 2; ++i) {
         s[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
     }
 
@@ -25,7 +25,7 @@ std::string gen_random_username(const int len) {
 		return std::string(s);
 }
 
-std::string gen_random_name(const int len) {
+std::string gen_random_name1(const int len) {
 		char s[len];
     static const char alpha[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
@@ -38,7 +38,7 @@ std::string gen_random_name(const int len) {
 		return std::string(s);
 }
 
-std::string gen_random_tagline(const int len) {
+std::string gen_random_tagline1(const int len) {
 	char s[len];
 	static const char arr[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz;'./<>~!@#$%^&*() _+=\\|{}[]`\"";
 
@@ -99,10 +99,67 @@ TEST_F(test_community, add_person) {
 //   there's no EXPERT functions for comparing non-built-in types, you need to
 //   do some parsing by yourself
 TEST_F(test_community, get_all_usernames) {
+	list<string> container;
+	for (int i = 0; i < 50; ++i) {
+		int r_age = rand() % 128;
+		string m_f = "f";
+		if (rand() % 101 > 50)
+			m_f = "m";
+		Person p_i = Person(gen_random_username11(64), gen_random_name1(64), gen_random_name1(64), m_f, r_age, gen_random_tagline1(512));
+		bool x = community.add_person(p_i);
+
+		//fuzz testing for add_person, as well
+		EXPECT_TRUE(x);
+		if (x)
+			container.push_back(p_i.get_username());
+	}
+
+	list<string> toTest = community.get_all_usernames();
+	for (std::list<string>::iterator it = toTest.begin(); it != toTest.end(); ++it)
+		EXPECT_TRUE(*std::find(container.begin(), container.end(), *it) == *it);
 }
 
 // test find_member by first name and age range
 TEST_F(test_community, find_member) {
+	// //Creating different people for new community
+	// Person person1 = Person("leeholim", "leeho", "lim", "m", 22, "I like Rohin");
+	// Person person2 = Person("rohinbhargava", "rohin", "bhargava", "m", 20, "I like Leeho (;");
+	// Person person3 = Person("donnydailey", "donny", "dailey", "m", 127, "I still like Rohin");
+	// Person person4 = Person("LeehoLim", "leeho", "lim", "m", 22, "I also like Rohin");
+	//
+	// //Creating new community with people
+	// community.set_name("NewCommunity");
+	// community.add_person(person1);
+	// community.add_person(person2);
+	// community.add_person(person3);
+	//
+	//
+	// //If the search result has a first name that is found in the list, then:
+	// list<Person> searchmembers = community.find_member('leeho'); //Finding members
+	// EXPECT_EQ(searchmembers[0].get_username(), 'leeholim'); //There should  be leeholim
+	// EXPECT_EQ(searchmembers[1].get_username(), 'LeehoLim'); //There should also be LeehoLim
+	// EXPECT_EQ(searchmembers.size(), 2); //There should be two elements
+	// EXPECT_NE(searchmembers.size(), 3); //There should only be two element in the list, and not three
+	//
+	// //If the search result has a first name that is now found within the list:
+	// list<Person> nomembersearch = community.find_member('yobutt');
+	// EXPECT_EQ(nomembersearch.size(), 0); //There should be no members
+	// EXPECT_NE(nomembersearch.size(), 1); //There should NOT be a member
+	//
+	// //If the search reuslts finds people within
+	// list<Person> agesearch = community.find_member(20, 22);
+	//
+	// EXPECT_EQ(searchmembers[0].get_username(), 'leeholim'); //Should have incl. upper bound, leeho = 22
+	// EXPECT_EQ(searchmembers[1].get_username(), 'rohinbhargava'); //Should have incl. lower bound inclusion. Rohin is 20 = LB
+	// EXPECT_EQ(searchmembers[2].get_username(), 'LeehoLim'); //Should have incl. upper bound, leeho = 22
+	// EXPECT_EQ(searchmembers.size(), 3); //There should be 3 elements
+	// EXPECT_NE(searchmembers.size(), 0); //There should not be no elements
+	//
+	// //If the search result for age finds no users in the list:
+	// list<Person> agesearch2 = community.find_member(24, 126);
+	//
+	// EXPECT_EQ(searchmembers.size(), 0); //There should be no one that fits in this range
+	// EXPECT_NE(searchmembers.size(), 1); //There should not be anyone that fits in this range
 }
 
 // test get_member

@@ -66,7 +66,7 @@ string Person::get_info() {
     }
     if (!!get_age() || (!get_age() && !ret.compare(""))) {
       ret += "Age: ";
-      ret += get_age();
+      ret += std::to_string(get_age());
       ret += " ";
     }
     if (get_tagline() != "") {
@@ -74,7 +74,7 @@ string Person::get_info() {
       ret += get_tagline();
       ret += "\n";
     }
-    cout << ret;
+    
     return ret;
 }
 
@@ -144,6 +144,7 @@ bool Person::set_info(string _username, string _firstname, string _lastname, str
                       int _age, string _tagline) {
   if (set_username(_username) && set_firstname(_firstname) && set_lastname(_lastname) && set_gender(_gender) && set_age(_age) && set_tagline(_tagline))
     return true;
+
   else
   {
     username = "";

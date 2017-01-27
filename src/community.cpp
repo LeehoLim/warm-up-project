@@ -92,9 +92,11 @@ list<Person> Community::find_member(int age_lb, int age_ub) {
 }
 
 bool Community::send_msg(list<string> usernames, string msg) {
+  bool good = true;
   std::list<string>::iterator it = usernames.begin();
   while(it != usernames.end()) {
-    if(get_member(*it).get_info() == "") {
+    if(get_member(*it).get_username() == "") {
+      good = false;
       continue;
     }
     else {
@@ -104,5 +106,5 @@ bool Community::send_msg(list<string> usernames, string msg) {
   }
 	// send msg to a Person addressed by username
 	// make sure the username is validated
-	return false;
+	return good;
 }
