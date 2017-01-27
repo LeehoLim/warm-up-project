@@ -13,7 +13,7 @@ Community::Community(string _name, map<string,Person> _people)
     people = _people;
 }
 
-//Will get the name from the current name in the community class. 
+//Will get the name from the current name in the community class.
 //Default is set to empty string
 string Community::get_name() {
 	return name;
@@ -43,7 +43,7 @@ bool Community::add_person(Person _person) {
 }
 
 // Given a username, get_member will look for a person with that username
-// and return the person object for a given username 
+// and return the person object for a given username
 Person Community::get_member(string username) {
     if (people.find(username) != people.end()) {
         return people[username];
@@ -78,38 +78,38 @@ void Community::print_all_usernames() {
 }
 
 //Given a firstname, will return a list of people that have the same first name
-//Will iterate through the map and push onto a list of people 
+//Will iterate through the map and push onto a list of people
 list<Person> Community::find_member(string firstname) {
     list<Person> ret;
     std::map<string,Person>::iterator it = people.begin();
     while (it != people.end()) {
       if(firstname.compare(it->second.get_firstname()) == 0) {
         ret.push_back(it->second);
-        ++it;
     }
-    // find users with a certain first name
+    ++it;
   }
   return ret;
 }
 
 
 //Given a lower and upper integer bound (inclusive), will return a list of people that
-//fall within this range. Same method of iterating through the mapping and 
+//fall within this range. Same method of iterating through the mapping and
 //pushing people that are within the age range
 list<Person> Community::find_member(int age_lb, int age_ub) {
   list<Person> ret;
   std::map<string,Person>::iterator it = people.begin();
   while (it != people.end()) {
     int age = it->second.get_age();
-      if(age_lb <= age <= age_ub){
+      if(age_lb <= age && age <= age_ub){
         ret.push_back(it->second);
       }
+    ++it;
     }
   // find users within certain ages [age_lb, age_ub], both lower bound and upper bound shall be inclusive
   return ret;
 }
 
-//Given a list of usernames and a string message, this function will send the message to all 
+//Given a list of usernames and a string message, this function will send the message to all
 //users listed. If the message sends to the users, will output true, else false.
 //Traverses through the given list and invokes the get_msg function in the
 // "Person" class to relay the message to the user
@@ -119,6 +119,7 @@ bool Community::send_msg(list<string> usernames, string msg) {
   while(it != usernames.end()) {
     if(get_member(*it).get_username() == "") {
       good = false;
+      ++it;
       continue;
     }
     else {
