@@ -7,7 +7,7 @@ Community::Community()
 Community::Community(string _name, map<string,Person> _people)
   : people(_people) {
     if (!set_name(_name)) {
-        std::cout << "Something went wrong constructing this community. Default values will be used.";
+        std::cout << "Something went wrong constructing this community. Default values will be used.\n";
         _name = "";
     }
     people = _people;
@@ -26,7 +26,7 @@ bool Community::set_name(string _name) {
 }
 
 bool Community::add_person(Person _person) {
-    if (people.count(_person.get_username()) > 0)
+    if (people.count(_person.get_username()) > 0 || !_person.get_username().compare(""))
       return false;
     else {
       people.insert(std::pair<string,Person>(_person.get_username(), _person));

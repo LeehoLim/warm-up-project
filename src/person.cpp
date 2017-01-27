@@ -22,7 +22,6 @@ Person::Person(string _username, string _firstname, string _lastname,
                string _gender, int _age, string _tagline) {
       if (!set_info(_username, _firstname, _lastname, _gender, _age, _tagline))
           std::cout << "Something went wrong in creating this person. Using default values.\n";
-      std::cout << get_info();
 }
 
 string Person::get_username() {
@@ -46,30 +45,36 @@ string Person::get_tagline() {
 string Person::get_info() {
 	  string ret = "";
     if (get_username() != "") {
+      ret += "Username: ";
       ret += get_username();
       ret += " ";
     }
     if (get_firstname() != "") {
+      ret += "First Name: ";
       ret += get_firstname();
       ret += " ";
     }
     if (get_lastname() != "") {
+      ret += "Last Name: ";
       ret += get_lastname();
       ret += " ";
     }
     if (get_gender() != "") {
+      ret += "Gender: ";
       ret += get_gender();
       ret += " ";
     }
     if (!!get_age() || (!get_age() && !ret.compare(""))) {
+      ret += "Age: ";
       ret += get_age();
       ret += " ";
     }
     if (get_tagline() != "") {
+      ret += "Tagline: ";
       ret += get_tagline();
       ret += "\n";
     }
-
+    cout << ret;
     return ret;
 }
 

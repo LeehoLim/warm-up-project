@@ -11,17 +11,44 @@ protected:
 // you should complete the following test cases
 // you should add more if you see fit
 
-void gen_random(char *s, const int len) {
-    static const char alphanum[] =
-        "0123456789"
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-        "abcdefghijklmnopqrstuvwxyz";
+std::string gen_random_username(const int len) {
+		char s[len];
+    static const char alphanum[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
-    for (int i = 0; i < len; ++i) {
+		s[0] = alphanum[rand() % (sizeof(alphanum) - 11) + 10];
+    for (int i = 0; i < len - 1; ++i) {
         s[i] = alphanum[rand() % (sizeof(alphanum) - 1)];
     }
 
     s[len] = 0;
+
+		return std::string(s);
+}
+
+std::string gen_random_name(const int len) {
+		char s[len];
+    static const char alpha[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+
+    for (int i = 0; i < len - 1; ++i) {
+        s[i] = alpha[rand() % (sizeof(alpha) - 1)];
+    }
+
+    s[len] = 0;
+
+		return std::string(s);
+}
+
+std::string gen_random_tagline(const int len) {
+	char s[len];
+	static const char arr[] = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz;'./<>~!@#$%^&*() _+=\\|{}[]`\"";
+
+	for (int i = 0; i < len - 1; ++i) {
+			s[i] = arr[rand() % (sizeof(arr) - 1)];
+	}
+
+	s[len] = 0;
+
+	return std::string(s);
 }
 
 // test get_name
@@ -52,10 +79,6 @@ TEST_F(test_community, set_name) {
 	EXPECT_FALSE(community.set_name("1"));
 	EXPECT_FALSE(community.set_name("12a"));
 	EXPECT_TRUE(community.set_name("a12"));
-
-
-
-
 }
 
 // test add_person
@@ -69,10 +92,7 @@ TEST_F(test_community, add_person) {
 	EXPECT_FALSE(community.add_person(person1));
 	EXPECT_TRUE(community.add_person(person2));
 	EXPECT_TRUE(community.add_person(person3));
-
-
-
-
+	EXPECT_FALSE(community.add_person(Person()));
 }
 
 // test get_all_usernames
